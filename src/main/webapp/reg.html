@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="GB18030">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keys" content="">
+    <meta name="author" content="">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/login.css">
+	<style>
+
+	</style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <div><a class="navbar-brand" href="index.html" style="font-size:32px;">千峰-创意产品众筹平台</a></div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+        <form class="form-signin" role="form" id="cForm" method="post" action="/register">
+        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 用户注册</h2>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" name="userName" required id="inputSuccess3" placeholder="请输入登录账号" autofocus>
+			<span class="glyphicon glyphicon-user form-control-feedback"></span>
+		  </div>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" name="password" required id="inputSuccess4" placeholder="请输入登录密码" style="margin-top:10px;">
+			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		  </div>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" name="regEmail" required id="inputSuccess5" placeholder="请输入邮箱地址" style="margin-top:10px;">
+			<span class="glyphicon glyphicon glyphicon-envelope form-control-feedback"></span>
+		  </div>
+
+        <div class="checkbox">
+          <label>
+            忘记密码
+          </label>
+          <label style="float:right">
+            <a href="login.html">我有账号</a>
+          </label>
+        </div>
+        <input type="submit" class="btn btn-lg btn-success btn-block" value="注册" />
+      </form>
+    </div>
+    <script src="jquery/jquery-2.1.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <!--<script src="js/messages_he.js"></script>-->
+    <!--<script src="js/messages_gl.js"></script>-->
+    <!--<script src="js/messages_ge.js"></script>-->
+    <script src="js/messages_zh.js"></script>
+    <script src="js/additional.js"></script>
+
+
+  <script>
+
+      $().ready(function() {
+
+          $("#cForm").validate({
+
+              onsubmit: true,// 是否在提交是验证
+              onfocusout: false,// 是否在获取焦点时验证
+              onkeyup: true,// 是否在敲击键盘时验证
+
+              rules: {　　　　//规则
+                  userName: {　　//要对应相对应的input中的name属性
+                      required: true
+                  },
+                  password: {
+                      required: true
+                  },
+                  regEmail: {
+                      required: true
+                  },
+              },
+              messages: {　　　　//验证错误信息
+                  userName: {
+                      required: "请输入用户名"
+                  },
+                  password: {
+                      required: "请输入密码"
+                  },
+                  regEmail: {
+                      required: "请输入邮箱"
+                  }
+              }
+          });
+
+      })
+
+    // function From() {
+    //     var type = $("#select").val();
+    //
+    //     var username = $("#inputSuccess3").val();
+    //     var password = $("#inputSuccess4").val();
+    //     var email =$("#inputSuccess5").val();
+    //     if (username.trim().length>0 && password.trim().length>0 &&email.trim().length>0){
+    //
+    //         return true;
+    //
+    //     } else {
+    //
+    //         return false;
+    //     }
+    //
+    // }
+
+
+
+  </script>
+  </body>
+</html>

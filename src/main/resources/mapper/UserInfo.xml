@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fwt.mapper.UserInfoMapper">
+
+    <select id="selectAllUser" resultType="com.fwt.pojo.UserInfo" parameterType="com.fwt.pojo.UserInfo">
+        select * from userinfo ;
+    </select>
+   <!--登录-->
+    <select id="LoginUser" resultType="com.fwt.pojo.UserInfo" parameterType="com.fwt.pojo.UserInfo">
+        select * from userinfo where username = #{userName} and password = #{password}
+    </select>
+    <!--id查询-->
+    <select id="UserInfoById" resultType="com.fwt.pojo.UserInfo" parameterType="int">
+        select * from userinfo where userid = #{userId}
+    </select>
+    <!--模糊查询-->
+  <select id="selectLike" resultType="com.fwt.pojo.UserInfo" parameterType="String">
+      SELECT  * FROM  userinfo WHERE username
+      LIKE  concat('%',#{userName},'%')
+  OR MOBILE LIKE concat('%',#{mobile},'%') OR  REGEMAIL LIKE concat('%',#{regEmail},'%');
+  </select>
+    <!--总数查询-->
+    <select id="selectTotalCount" resultType="int" >
+       SELECT COUNT(*)  FROM userinfo
+    </select>
+    <!--分页查询-->
+    <select id="SelectPage" resultType="com.fwt.pojo.UserInfo" parameterType="com.fwt.utils.Page">
+        SELECT * FROM userinfo LIMIT #{start},#{pageSize}
+    </select>
+    <insert id="AddUser" parameterType="com.fwt.pojo.UserInfo">
+         INSERT  into userinfo VALUES(
+        DEFAULT,
+                #{userName},
+                #{password},
+                #{regEmail},
+                #{mobile},
+                #{icon}
+        )
+    </insert>
+    <update id="updateUserInfo" parameterType="com.fwt.pojo.UserInfo">
+        update userinfo
+        <set>
+            <if test="userName!=null and userName!=''">
+                username = #{userName},
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="regEmail!=null and regEmail!=''">
+                regEmail = #{regEmail},
+            </if>
+            <if test="mobile!=null and mobile!=''">
+                mobile = #{mobile},
+            </if>
+            <if test="icon!=null and icon!=''">
+                icon = #{icon},
+            </if>
+        </set>
+        WHERE  userid = #{userId}
+
+    </update>
+    <delete id="deleteUserInfo" parameterType="int">
+        delete from userinfo where userid=#{userId};
+    </delete>
+</mapper>

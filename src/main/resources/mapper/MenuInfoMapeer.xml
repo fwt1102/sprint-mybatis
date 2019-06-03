@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fwt.mapper.MenuInfoMapper">
+
+
+    <!--<菜单3级查询></菜单3级查询>-->
+    <resultMap id="menuInfoMap" type="com.fwt.vo.MenuInfoVo">
+        <id column="parentid" property="pid"></id>
+        <result column="parentname" property="name"></result>
+
+    <collection property="children" ofType="com.fwt.vo.MenuInfoVo">
+
+       <result column="menuname" property="name"></result>
+
+        <collection property="children" ofType="com.fwt.vo.MenuInfoVo">
+            <id column="c_id" property="id"></id>
+            <result column="c_pid" property="pid"></result>
+            <result column="c_name" property="name"></result>
+            <result column="c_url" property="url"></result>
+            <result column="c_icon" property="icon"></result>
+            <result column="checked" property="checked"></result>
+        </collection>
+    </collection>
+    </resultMap>
+
+
+    <resultMap id="UserRoleMenuList" type="com.fwt.vo.MenuInfoVo">
+        <id column="menuid" property="id"></id>
+        <result column="parentid" property="pid"></result>
+        <result column="menuname" property="name"></result>
+        <result column="menu_url" property="url"></result>
+        <result column="menuicon" property="icon"></result>
+        <collection property="children" ofType="com.fwt.vo.MenuInfoVo">
+            <id column="c_id" property="id"></id>
+            <result column="c_pid" property="pid"></result>
+            <result column="c_name" property="name"></result>
+            <result column="c_url" property="url"></result>
+            <result column="c_icon" property="icon"></result>
+            <result column="checked" property="checked"></result>
+        </collection>
+
+    </resultMap>
+
+
+
+
+        <select id="listMenu" resultMap="menuInfoMap" parameterType="int">
+        SELECT tb2.*,ISNULL(r.MENUID) checked FROM
+        (SELECT tb1.* ,m3.MENUICON c_icon , m3.MENUID c_id , m3.MENUNAME c_name , m3.MENU_URL c_url , m3.PARENTID c_pid FROM
+        (SELECT m1.menuname parentname , m2.menuid parentid2 , m2.menuname menuname , m2.menu_url , m2.menuicon , m2.parentid FROM menuinfo m1 , menuinfo m2
+        WHERE m1.menuid = m2.parentid  AND m1.menuid=0) tb1
+        LEFT JOIN menuinfo m3
+        ON
+        tb1.parentid2=m3.parentid ) tb2
+        LEFT JOIN
+        (SELECT menuid FROM rolemenu WHERE roleId = #{roleid}) r ON tb2.c_id= r.MENUID
+        </select>
+
+     <!--查询当前用户所拥有的权限-->
+    <select id="SelectUserRoleMenuById" resultMap="UserRoleMenuList" parameterType="int">
+        SELECT  m1.*,m2.MENUICON c_icon,m2.MENUID c_id, m2.MENUNAME c_name ,m2.MENU_URL c_url,m2.PARENTID c_pid FROM
+        menuinfo m1,menuinfo m2 WHERE m1.`MENUID`=m2.`PARENTID`AND m1.`PARENTID`=0 AND  m2.MENUID IN
+        (SELECT rm.menuid FROM userinfo u, user_role ur, roleinfo r, rolemenu rm WHERE
+        u.userid=ur.userid AND ur.roleid=r.roleid AND r.roleid=rm.roleid AND u.userid=#{userid} GROUP BY rm.menuid)
+    </select>
+
+    <!--<删除权限></删除权限>-->
+    <delete id="deleteMenu" parameterType="int">
+        delete from rolemenu where roleid=#{roleid}
+    </delete>
+        <!--<添加权限></添加权限>    -->
+    <insert id="addMenu" parameterType="com.fwt.vo.MenuInfoVo2">
+        insert into rolemenu (rmid, roleid, menuid)
+        values
+        <foreach collection="menuids" index="index" item="menuid" separator="," >
+            (DEFAULT ,#{roleid}, #{menuid})
+        </foreach>
+    </insert>
+        </mapper>

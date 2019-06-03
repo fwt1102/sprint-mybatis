@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fwt.mapper.WangEditorMapper">
+
+    <insert id="AddWangEditorText" parameterType="com.fwt.dto.WangeditorDto">
+
+        insert into fuwenben (text,time) values (#{text}, #{time})
+    </insert>
+
+    <select id="selectAllWangEditor" resultType="com.fwt.dto.WangeditorDto" >
+       SELECT *  FROM fuwenben ORDER BY id DESC
+    </select>
+</mapper>

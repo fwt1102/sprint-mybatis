@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="wangeditor/css/wangEditor.min.css"/>
+    <script src="wangeditor/js/wangEditor.min.js"></script>
+    <script src="jquery/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<div class="col-md-12 margin-b-60">
+    <textarea class="xtl-editor-content" id="textarea1" name="content" placeholder="请输入内容"></textarea>
+</div>
+
+<script>
+
+
+    var editor = new wangEditor('textarea1');
+    editor.config.uploadImgUrl = 'upload1';
+    editor.config.uploadImgFileName = 'editorFile';
+    // 将图片大小限制为 3M
+    editor.config.uploadImgMaxSize = 3 * 1024 * 1024;
+    // 限制一次最多上传 1 张图片
+    editor.config.uploadImgMaxLength = 1;
+    editor.create();
+</script>
+
+
+
+</body>
+</html>

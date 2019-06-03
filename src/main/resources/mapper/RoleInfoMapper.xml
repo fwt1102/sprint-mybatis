@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fwt.mapper.RoleInfoMapper">
+    <!--查询分配好与未分配的角色-->
+    <select id="selectOrder" resultType="com.fwt.vo.RoleInfoVo" parameterType="int">
+
+  select ISNULL(tb1.roleId) isnull,ri.* from (SELECT r.* from userinfo u,user_role ur,roleinfo r
+        where u.USERID = ur.USERID and ur.ROLEID = r.ROLEID
+        and u.USERID = #{userId}) tb1 RIGHT JOIN roleinfo ri on tb1.ROLEID = ri.ROLEID
+    </select>
+
+    <!--查询用户的角色-->
+    <select id="selectByUserRole" resultType="com.fwt.pojo.RoleInfo"  >
+        SELECT * FROM  roleinfo
+    </select>
+    <!--添加用户角色-->
+    <insert id="addRole" parameterType="com.fwt.pojo.User_Role" >
+
+        insert into user_role (urid, userid, roleid)
+        values
+        <foreach collection="roleids" index="index" item="roleId" separator="," >
+            (DEFAULT ,#{userid}, #{roleId})
+        </foreach>
+    </insert>
+
+  <!--删除用户角色-->
+    <delete id="deleteRole" parameterType="com.fwt.pojo.User_Role">
+        delete from user_role where userid=#{userid} and roleid in
+        <foreach collection="roleids" index="index" item="roleId" open="(" separator="," close=")" >
+           #{roleId}
+        </foreach>
+    </delete>
+</mapper>

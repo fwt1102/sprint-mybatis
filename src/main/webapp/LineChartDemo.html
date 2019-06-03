@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="echarts/js/echarts.min.js"></script>
+    <script src="jquery/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+    <div id="pic1" style="width:800px;height:400px; margin: 20px auto;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById("pic1"));
+
+        // //获取X轴数据
+        // function getXAxis() {
+        //     var list = new Array();
+        //     for(var i=1;i<=12;i++){
+        //         list.push(i);
+        //     }
+        //     return list;
+        // }
+        //
+        // //定义选项
+        // var option = {
+        //     backgroundColor: '#FBFBFB',
+        //     //工具提示
+        //     tooltip : {
+        //         trigger: 'axis'
+        //     },
+        //     //说明；图例
+        //     legend: {
+        //         data:['充值','消费']
+        //     },
+        //     //可计算的
+        //     calculable : true,
+        //     //x轴
+        //     xAxis : [
+        //         {
+        //             axisLabel:{
+        //                 //旋转
+        //                 rotate: 30,
+        //                 interval:0
+        //             },
+        //             axisLine:{
+        //                 lineStyle :{
+        //                     color: '#CECECE'
+        //                 }
+        //             },
+        //             type : 'category',
+        //             boundaryGap : false,
+        //             data : getXAxis()
+        //         }
+        //     ],
+        //     yAxis : [
+        //         {
+        //             type : 'value',
+        //             axisLine:{
+        //                 lineStyle :{
+        //                     color: '#CECECE'
+        //                 }
+        //             }
+        //         }
+        //     ],
+        //     //系列(数据折线集合)
+        //     series : [
+        //         //折线数据
+        //         {
+        //             name:'充值',
+        //             type:'line',//折线图
+        //             symbol:'yes',//有没有圆点
+        //             smooth: 0.2,//折线的圆滑程度
+        //             color:['#66AEDE'],//折线的颜色
+        //             data:[800, 300, 500, 800, 300, 600,500,600,1000,100,400,800]//折线的数据
+        //         },
+        //         {
+        //             name:'消费',
+        //             type:'line',
+        //             symbol:'yes',
+        //             smooth: 0.2,
+        //             color:['#90EC7D'],
+        //             data:[600, 300, 400, 200, 300, 300,200,400,800,500,300,1000]
+        //         },
+        //         {
+        //             name:'消费1',
+        //             type:'line',
+        //             symbol:'yes',
+        //             smooth: 0.2,
+        //             color:['#90EC7D'],
+        //             data:[200, 500, 300, 200, 300, 400,200,400,800,500,300,1000]
+        //         }
+        //     ]
+        // };
+        //
+        // //设置选项
+        // myChart.setOption(option);
+
+        $.ajax(
+            {
+                url: "getDataJsonp",
+                type: "GET",
+                jsonp: "callback",
+                dataType: "jsonp", //指定服务器返回的数据类型
+                success: function (data) {
+                    alert(data.data)
+                    console.log(data);
+                    //使用返回的数据填充myChart的选项
+                    myChart.setOption(
+                    {
+                        backgroundColor: '#FBFBFB',
+                            //工具提示
+                            tooltip : {
+                        trigger: 'axis'
+                    },
+                        //说明；图例
+                        legend: {
+                            data:['充值','消费']
+                        },
+                        //可计算的
+                        calculable : true,
+                            //x轴
+                            xAxis : [
+                        {
+                            axisLabel:{
+                                //旋转
+                                rotate: 30,
+                                interval:0
+                            },
+                            axisLine:{
+                                lineStyle :{
+                                    color: '#CECECE'
+                                }
+                            },
+                            type : 'category', //x抽的数据
+                            boundaryGap : false,
+                            data : data.category //x抽的数据
+                        }
+                    ],
+                        yAxis : [
+                        {
+                            type : 'value',
+                            axisLine:{
+                                lineStyle :{
+                                    color: '#CECECE'
+                                }
+                            }
+                        }
+                    ],
+                        //系列(数据折线集合)
+                        series : [
+                        //折线数据
+                        {
+                            name:'充值',
+                            type:'line',//折线图
+                            symbol:'yes',//有没有圆点
+                            smooth: 0.2,//折线的圆滑程度
+                            color:['#66AEDE'],//折线的颜色
+                            data:data.data  //y轴的数据
+                        }
+                    ]
+                    })
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log("服务器异常");
+                    console.log(XMLHttpRequest.status);//200 400  404  415  500
+                    console.log(XMLHttpRequest.readyState);//0-4
+                    console.log(XMLHttpRequest.responseText);//响应文本
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    console.log(textStatus);
+                }
+            });
+
+
+
+    </script>
+</body>
+</html>
